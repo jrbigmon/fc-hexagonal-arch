@@ -45,7 +45,11 @@ export class Product implements ProductInterface {
     }
   }
   disable(): void {
-    this.status = ProductStatus.DISABLED;
+    if (this.price === 0) {
+      this.status = ProductStatus.DISABLED;
+    } else {
+      throw new Error("Price must be zero to disable the product.");
+    }
   }
   getStatus(): string {
     return this.status;

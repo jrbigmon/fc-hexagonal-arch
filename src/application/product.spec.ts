@@ -46,4 +46,36 @@ describe("Application Product entity", () => {
       expect(product.getStatus()).toBe(ProductStatus.DISABLED);
     });
   });
+
+  describe("Disable", () => {
+    it("Product disable successfully", () => {
+      const product = new Product(
+        randomUUID(),
+        "Product A",
+        ProductStatus.ENABLED,
+        120
+      );
+
+      product.setPrice(0);
+
+      expect(() => {
+        product.disable();
+      }).not.toThrow();
+      expect(product.getStatus()).toBe(ProductStatus.DISABLED);
+    });
+
+    it("Product disable unsuccessfully", () => {
+      const product = new Product(
+        randomUUID(),
+        "Product A",
+        ProductStatus.ENABLED,
+        120
+      );
+
+      expect(() => {
+        product.disable();
+      }).toThrow();
+      expect(product.getStatus()).toBe(ProductStatus.ENABLED);
+    });
+  });
 });
