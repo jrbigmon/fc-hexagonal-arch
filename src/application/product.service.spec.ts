@@ -130,4 +130,28 @@ describe("Product service", () => {
       );
     });
   });
+
+  describe("Disable", () => {
+    beforeEach(() => {
+      productPersistence = new ProductPersistenceMock(
+        new Map<string, ProductInterface>().set(
+          "1",
+          new Product("1", "Product 1", ProductStatus.ENABLED, 10)
+        )
+      );
+      productService = new ProductService(productPersistence);
+    });
+
+    it("should disable a product", async () => {
+      let product: ProductInterface | null = null;
+      try {
+        product = await productService.disable("1");
+        expect(product.getStatus()).toBe(ProductStatus.DISABLED);
+      } catch (error) {
+        expect(error).toBeNull();
+      } finally {
+        expect(product).not.toBeNull();
+      }
+    });
+  });
 });
