@@ -3,7 +3,7 @@ import {
   ProductInterface,
   ProductPersistenceInterface,
   ProductServiceInterface,
-} from "./product";
+} from "../entity/product";
 
 export class ProductService implements ProductServiceInterface {
   constructor(
