@@ -1,21 +1,5 @@
-import { randomUUID } from "crypto";
-
-export enum ProductStatus {
-  DISABLED = "disabled",
-  ENABLED = "enabled",
-}
-
-export interface ProductInterface {
-  isValid(): boolean;
-  enable(): void;
-  disable(): void;
-  getId(): string;
-  getName(): string;
-  setName(name: string): void;
-  getStatus(): string;
-  getPrice(): number;
-  setPrice(price: number): void;
-}
+import { ProductStatus } from "../enum/product.status.enum";
+import { ProductInterface } from "./product.interface";
 
 export class Product implements ProductInterface {
   private id: string;
@@ -110,35 +94,3 @@ export class Product implements ProductInterface {
     this.price = price;
   }
 }
-
-export function createProduct({
-  name,
-  price,
-}: {
-  name: string;
-  price: number;
-}): Product {
-  const status =
-    price && price > 0 ? ProductStatus.ENABLED : ProductStatus.DISABLED;
-
-  return new Product(randomUUID(), name, status, price);
-}
-
-export interface ProductServiceInterface {
-  get(id: string): Promise<ProductInterface>;
-  create(name: string, price: number): Promise<ProductInterface>;
-  enable(id: string, price: number): Promise<ProductInterface>;
-  disable(id: string): Promise<ProductInterface>;
-}
-
-export interface ProductReaderInterface {
-  get(id: string): Promise<ProductInterface>;
-}
-
-export interface ProductWriterInterface {
-  save(product: ProductInterface): Promise<ProductInterface>;
-}
-
-export interface ProductPersistenceInterface
-  extends ProductReaderInterface,
-    ProductWriterInterface {}

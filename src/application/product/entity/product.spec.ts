@@ -1,4 +1,5 @@
-import { Product, ProductStatus } from "./product";
+import { ProductStatus } from "../enum/product.status.enum";
+import { Product } from "./product";
 import { randomUUID } from "crypto";
 
 describe("Application Product entity", () => {

@@ -1,11 +1,9 @@
-import {
-  Product,
-  ProductInterface,
-  ProductPersistenceInterface,
-  ProductServiceInterface,
-  ProductStatus,
-} from "./product";
+import { ProductInterface } from "../entity/product.interface";
+import { ProductPersistenceInterface } from "../persistence/product.persistence.interface";
 import { ProductService } from "./product.service";
+import { ProductServiceInterface } from "./product.service.interface";
+import { Product } from "../entity/product";
+import { ProductStatus } from "../enum/product.status.enum";
 
 class ProductPersistenceMock implements ProductPersistenceInterface {
   list: Map<string, ProductInterface>;

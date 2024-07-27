@@ -1,9 +1,7 @@
-import {
-  createProduct,
-  ProductInterface,
-  ProductPersistenceInterface,
-  ProductServiceInterface,
-} from "../entity/product";
+import { ProductInterface } from "../entity/product.interface";
+import { ProductFactory } from "../factory/product.factory";
+import { ProductPersistenceInterface } from "../persistence/product.persistence.interface";
+import { ProductServiceInterface } from "./product.service.interface";
 
 export class ProductService implements ProductServiceInterface {
   constructor(
@@ -30,7 +28,7 @@ export class ProductService implements ProductServiceInterface {
 
   async create(name: string, price: number): Promise<ProductInterface> {
     try {
-      const newProduct = createProduct({ name, price });
+      const newProduct = ProductFactory.createProduct(name, price);
 
       newProduct.isValid();
 
