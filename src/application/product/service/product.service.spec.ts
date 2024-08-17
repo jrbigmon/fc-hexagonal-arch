@@ -20,14 +20,8 @@ class ProductPersistenceMock implements ProductPersistenceInterface {
     return product;
   }
 
-  async save(product: ProductInterface): Promise<ProductInterface> {
+  async save(product: ProductInterface): Promise<void> {
     this.list.set(product.getId(), product);
-
-    const productSaved = this.list.get(product.getId());
-
-    if (!productSaved) throw new Error(`Product ${product.getId()} not saved`);
-
-    return productSaved;
   }
 }
 

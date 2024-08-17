@@ -5,7 +5,7 @@ export interface ProductReaderInterface {
 }
 
 export interface ProductWriterInterface {
-  save(product: ProductInterface): Promise<ProductInterface>;
+  save(product: ProductInterface): Promise<void>;
 }
 
 export interface ProductPersistenceInterface

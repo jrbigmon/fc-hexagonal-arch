@@ -32,9 +32,7 @@ export class ProductService implements ProductServiceInterface {
 
       newProduct.isValid();
 
-      const productSaved = await this.productPersistence.save(newProduct);
-
-      if (!productSaved) throw new Error("Error saving product");
+      await this.productPersistence.save(newProduct);
 
       return newProduct;
     } catch (error) {
@@ -56,9 +54,7 @@ export class ProductService implements ProductServiceInterface {
 
       product.isValid();
 
-      const productSaved = await this.productPersistence.save(product);
-
-      if (!productSaved) throw new Error("Error saving product");
+      await this.productPersistence.save(product);
 
       return product;
     } catch (error) {
@@ -80,9 +76,7 @@ export class ProductService implements ProductServiceInterface {
 
       product.isValid();
 
-      const productSaved = await this.productPersistence.save(product);
-
-      if (!productSaved) throw new Error("Error saving product");
+      await this.productPersistence.save(product);
 
       return product;
     } catch (error) {
