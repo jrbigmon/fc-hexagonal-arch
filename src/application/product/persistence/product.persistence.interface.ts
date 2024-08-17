@@ -1,7 +1,7 @@
 import { ProductInterface } from "../entity/product.interface";
 
 export interface ProductReaderInterface {
-  get(id: string): Promise<ProductInterface>;
+  get(id: string): Promise<ProductInterface | null>;
 }
 
 export interface ProductWriterInterface {
