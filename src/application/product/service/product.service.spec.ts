@@ -4,34 +4,38 @@ import { ProductService } from "./product.service";
 import { ProductServiceInterface } from "./product.service.interface";
 import { Product } from "../entity/product";
 import { ProductStatus } from "../enum/product.status.enum";
+import sqlite3, { Database } from "sqlite3";
+import { ProductPersistenceDatabase } from "../../../adapters/database/product/product.persistence.database";
+import { productTableDatabase } from "../../../adapters/database/product/product.table.database";
 
-class ProductPersistenceMock implements ProductPersistenceInterface {
-  list: Map<string, ProductInterface>;
-
-  constructor(list?: Map<string, ProductInterface>) {
-    this.list = list ?? new Map();
-  }
-
-  async get(id: string): Promise<ProductInterface> {
-    const product = this.list.get(id);
-
-    if (!product) throw new Error(`Product ${id} not found`);
-
-    return product;
-  }
-
-  async save(product: ProductInterface): Promise<void> {
-    this.list.set(product.getId(), product);
-  }
-}
-
-describe("Product service", () => {
+describe("Product service unit tests", () => {
+  let database: Database;
   let productService: ProductServiceInterface;
   let productPersistence: ProductPersistenceInterface;
 
+  beforeEach(async () => {
+    sqlite3.verbose();
+
+    database = new sqlite3.Database(":memory:", (error) => {
+      if (error) {
+        return console.log("Error on connection to database", error);
+      }
+    });
+
+    await productTableDatabase(database);
+  });
+
+  afterEach(() => {
+    database.close((error) => {
+      if (error) {
+        console.log("Error on close connection", error);
+      }
+    });
+  });
+
   describe("Create", () => {
     beforeEach(() => {
-      productPersistence = new ProductPersistenceMock();
+      productPersistence = new ProductPersistenceDatabase(database);
       productService = new ProductService(productPersistence);
     });
 
@@ -39,6 +43,12 @@ describe("Product service", () => {
       let productSaved: ProductInterface | null = null;
       try {
         productSaved = await productService.create("Product 1", 10);
+
+        const productInDatabase = await productService.get(
+          productSaved.getId()
+        );
+
+        expect(productInDatabase).toMatchObject(productSaved);
         expect(productSaved).not.toBeNull();
       } catch (error) {
         expect(error).toBeNull();
@@ -55,12 +65,10 @@ describe("Product service", () => {
   });
 
   describe("Get", () => {
-    beforeEach(() => {
-      productPersistence = new ProductPersistenceMock(
-        new Map<string, ProductInterface>().set(
-          "1",
-          new Product("1", "Product 1", ProductStatus.ENABLED, 100)
-        )
+    beforeEach(async () => {
+      productPersistence = new ProductPersistenceDatabase(database);
+      await productPersistence.save(
+        new Product("1", "Product 1", ProductStatus.ENABLED, 100)
       );
       productService = new ProductService(productPersistence);
     });
@@ -81,7 +89,7 @@ describe("Product service", () => {
     it("should be not return a product saved", async () => {
       expect(async () => {
         await productService.get("2");
-      }).rejects.toThrow("Product 2 not found");
+      }).rejects.toThrow("Product not found");
     });
 
     it("should be not return a product saved when id is not send", async () => {
@@ -92,12 +100,10 @@ describe("Product service", () => {
   });
 
   describe("Enable", () => {
-    beforeEach(() => {
-      productPersistence = new ProductPersistenceMock(
-        new Map<string, ProductInterface>().set(
-          "1",
-          new Product("1", "Product 1", ProductStatus.DISABLED, 0)
-        )
+    beforeEach(async () => {
+      productPersistence = new ProductPersistenceDatabase(database);
+      await productPersistence.save(
+        new Product("1", "Product 1", ProductStatus.DISABLED, 0)
       );
       productService = new ProductService(productPersistence);
     });
@@ -108,6 +114,7 @@ describe("Product service", () => {
         product = await productService.enable("1", 100);
         expect(product.getStatus()).toBe(ProductStatus.ENABLED);
       } catch (error) {
+        console.error(error);
         expect(error).toBeNull();
       } finally {
         expect(product).not.toBeNull();
@@ -124,12 +131,10 @@ describe("Product service", () => {
   });
 
   describe("Disable", () => {
-    beforeEach(() => {
-      productPersistence = new ProductPersistenceMock(
-        new Map<string, ProductInterface>().set(
-          "1",
-          new Product("1", "Product 1", ProductStatus.ENABLED, 10)
-        )
+    beforeEach(async () => {
+      productPersistence = new ProductPersistenceDatabase(database);
+      await productPersistence.save(
+        new Product("1", "Product 1", ProductStatus.ENABLED, 10)
       );
       productService = new ProductService(productPersistence);
     });
