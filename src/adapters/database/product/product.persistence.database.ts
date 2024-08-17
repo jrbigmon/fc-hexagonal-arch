@@ -18,45 +18,79 @@ export class ProductPersistenceDatabase implements ProductPersistenceInterface {
     this.db = database;
   }
 
-  get(id: string): Promise<ProductInterface> {
+  get(id: string): Promise<ProductInterface | null> {
     return new Promise((resolve, reject) => {
-      this.db.all(
-        `SELECT * FROM products WHERE id = ${id}`,
-        (_: this, error: Error | null, rows: ProductPersistedInterface[]) => {
-          if (error !== null) {
+      this.db.get(
+        `SELECT * FROM products WHERE id = ?`,
+        [id],
+        (error: Error, rows: ProductPersistedInterface) => {
+          if (error) {
             return reject(error.message);
           }
 
-          if (rows?.length === 0) return null;
-
-          const product = rows[0];
+          if (!rows) {
+            return resolve(null);
+          }
 
           return resolve(
-            new Product(product.id, product.name, product.status, product.price)
+            new Product(rows.id, rows.name, rows.status, rows.price)
           );
         }
       );
     });
   }
 
-  save(product: ProductInterface): Promise<void> {
+  private create(product: ProductInterface): Promise<void> {
     return new Promise((resolve, reject) => {
       this.db.run(
-        "INSERT INTO products (id, name, status, price) VALUES ($id, $name, $status, $price)",
-        {
-          $id: product.getId(),
-          $name: product.getName(),
-          $status: product.getStatus(),
-          $price: product.getPrice(),
-        },
-        (_: this, error: Error | null) => {
-          if (error !== null) {
+        "INSERT INTO products (id, name, status, price) VALUES (?, ?, ?, ?)",
+        [
+          product.getId(),
+          product.getName(),
+          product.getStatus(),
+          product.getPrice(),
+        ],
+        function (error: Error | null) {
+          if (error) {
             return reject(error);
           }
 
-          resolve();
+          return resolve();
         }
       );
+    });
+  }
+
+  private update(product: ProductInterface): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.db.run(
+        "UPDATE products  SET name = ?, status = ?, price = ? WHERE id = ?",
+        [
+          product.getName(),
+          product.getStatus(),
+          product.getPrice(),
+          product.getId(),
+        ],
+        function (error: Error | null) {
+          if (error) {
+            return reject(error);
+          }
+
+          return resolve();
+        }
+      );
+    });
+  }
+
+  save(product: ProductInterface): Promise<void> {
+    return new Promise(async (resolve) => {
+      const alreadySaved = await this.get(product.getId());
+
+      if (!alreadySaved) {
+        return resolve(this.create(product));
+      } else {
+        return resolve(this.update(product));
+      }
     });
   }
 }
