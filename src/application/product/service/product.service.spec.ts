@@ -112,6 +112,9 @@ describe("Product service unit tests", () => {
       let product: ProductInterface | null = null;
       try {
         product = await productService.enable("1", 100);
+        const productInDatabase = await productService.get(product.getId());
+
+        expect(productInDatabase).toMatchObject(product);
         expect(product.getStatus()).toBe(ProductStatus.ENABLED);
       } catch (error) {
         console.error(error);
@@ -143,6 +146,9 @@ describe("Product service unit tests", () => {
       let product: ProductInterface | null = null;
       try {
         product = await productService.disable("1");
+        const productInDatabase = await productService.get(product.getId());
+
+        expect(productInDatabase).toMatchObject(product);
         expect(product.getStatus()).toBe(ProductStatus.DISABLED);
       } catch (error) {
         expect(error).toBeNull();
