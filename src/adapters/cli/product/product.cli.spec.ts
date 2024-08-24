@@ -1,11 +1,11 @@
 import { Database, verbose } from "sqlite3";
-import { ProductPersistenceInterface } from "../../application/product/persistence/product.persistence.interface";
-import { ProductServiceInterface } from "../../application/product/service/product.service.interface";
-import { productTableDatabase } from "../database/product/product.table.database";
-import { ProductPersistenceDatabase } from "../database/product/product.persistence.database";
-import { ProductService } from "../../application/product/service/product.service";
+import { ProductPersistenceInterface } from "../../../application/product/persistence/product.persistence.interface";
+import { ProductServiceInterface } from "../../../application/product/service/product.service.interface";
+import { productTableDatabase } from "../../database/product/product.table.database";
+import { ProductPersistenceDatabase } from "../../database/product/product.persistence.database";
+import { ProductService } from "../../../application/product/service/product.service";
 import { productCli } from "./product.cli";
-import { ProductStatus } from "../../application/product/enum/product.status.enum";
+import { ProductStatus } from "../../../application/product/enum/product.status.enum";
 
 describe("Product cli", () => {
   let database: Database;

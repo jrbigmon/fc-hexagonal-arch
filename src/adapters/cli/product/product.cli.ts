@@ -1,5 +1,5 @@
-import { ProductInterface } from "../../application/product/entity/product.interface";
-import { ProductServiceInterface } from "../../application/product/service/product.service.interface";
+import { ProductInterface } from "../../../application/product/entity/product.interface";
+import { ProductServiceInterface } from "../../../application/product/service/product.service.interface";
 
 interface Args {
   action: keyof ProductServiceInterface;
