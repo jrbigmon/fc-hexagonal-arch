@@ -1,3 +1,4 @@
+import { ClientError } from "../../errors/client.error";
 import { ProductInterface } from "../entity/product.interface";
 import { ProductFactory } from "../factory/product.factory";
 import { ProductPersistenceInterface } from "../persistence/product.persistence.interface";
@@ -22,11 +23,11 @@ export class ProductService implements ProductServiceInterface {
 
   async get(id: string): Promise<ProductInterface> {
     try {
-      if (!id) throw new Error("Product id is required");
+      if (!id) throw new ClientError("Product id is required");
 
       const product = await this.productPersistence.get(id);
 
-      if (!product) throw new Error("Product not found");
+      if (!product) throw new ClientError("Product not found");
 
       return product;
     } catch (error) {

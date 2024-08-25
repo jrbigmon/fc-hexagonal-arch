@@ -1,3 +1,4 @@
+import { ClientError } from "../../errors/client.error";
 import { ProductStatus } from "../enum/product.status.enum";
 import { ProductInterface } from "./product.interface";
 
@@ -16,13 +17,13 @@ export class Product implements ProductInterface {
 
   isValid(): boolean {
     if (this.status === ProductStatus.ENABLED && this.price <= 0) {
-      throw new Error(
+      throw new ClientError(
         "Product status is enabled but the price is less or equal to zero"
       );
     }
 
     if (this.status === ProductStatus.DISABLED && this.price > 0) {
-      throw new Error(
+      throw new ClientError(
         "Product status is disabled but the price is greater than zero"
       );
     }
@@ -31,15 +32,15 @@ export class Product implements ProductInterface {
       this.status !== ProductStatus.DISABLED &&
       this.status !== ProductStatus.ENABLED
     ) {
-      throw new Error("Product status is not supported");
+      throw new ClientError("Product status is not supported");
     }
 
     if (!this.id) {
-      throw new Error("Product id is required");
+      throw new ClientError("Product id is required");
     }
 
     if (!this.name) {
-      throw new Error("Product name is required");
+      throw new ClientError("Product name is required");
     }
 
     if (
@@ -48,7 +49,7 @@ export class Product implements ProductInterface {
       typeof this.price !== "number" ||
       isNaN(Number(this.price))
     ) {
-      throw new Error("Product price is required and must be a number");
+      throw new ClientError("Product price is required and must be a number");
     }
 
     return true;
@@ -58,7 +59,9 @@ export class Product implements ProductInterface {
     if (this.price > 0) {
       this.status = ProductStatus.ENABLED;
     } else {
-      throw new Error("Price must be greater than zero to enable the product.");
+      throw new ClientError(
+        "Price must be greater than zero to enable the product."
+      );
     }
   }
 
@@ -66,7 +69,7 @@ export class Product implements ProductInterface {
     if (this.price === 0) {
       this.status = ProductStatus.DISABLED;
     } else {
-      throw new Error("Price must be zero to disable the product.");
+      throw new ClientError("Price must be zero to disable the product.");
     }
   }
 
