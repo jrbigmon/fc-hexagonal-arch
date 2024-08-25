@@ -5,14 +5,15 @@
   "license": "MIT",
   "scripts": {
     "build": "npx tsc",
-    "start": "build && node ./build/index.js",
-    "start:dev": "npx ts-node ./src/index.ts",
+    "start:web": "npx tsc && node ./build/adapters/web/http/server/server.js",
+    "start:web:dev": "npx ts-node-dev ./src/adapters/web/http/server/server.ts --watch",
     "test:jest": "jest --passWithNoTests --updateSnapshot --coverage"
   },
   "bin": {
     "product-cli": "./build/adapters/cli/product/product.exec.cli.js"
   },
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "@types/inquirer": "^9.0.7",
     "@types/jest": "^29.5.12",
     "@types/sqlite3": "^3.1.11",
@@ -20,11 +21,13 @@
     "sqlite3": "^5.1.7",
     "ts-jest": "^29.2.3",
     "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.5.4"
   },
   "dependencies": {
     "@inquirer/prompts": "^5.3.8",
     "commander": "^12.1.0",
+    "express": "^4.19.2",
     "inquirer": "^10.1.8"
   }
 }
