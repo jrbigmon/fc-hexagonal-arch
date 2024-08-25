@@ -11,7 +11,11 @@ export const ProductRouter = (database: Database): Router => {
   );
   const productController = ProductController(productService);
 
-  router.get("/products", async (req, res) => productController.list(req, res));
+  router.post("/products", productController.create);
+  router.get("/products", productController.list);
+  router.put("/products/enable/:id", productController.enable);
+  router.put("/products/disable/:id", productController.disable);
+  router.get("/products/:id", productController.get);
 
   return router;
 };
