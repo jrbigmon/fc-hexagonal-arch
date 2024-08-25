@@ -26,11 +26,17 @@ interface ArgsCreate extends Args {
   params: { name: string; price: number };
 }
 
+interface ArgsList extends Args {
+  action: "list";
+  params: {};
+}
+
 type ArgsMapping = {
   get: ArgsGet;
   enable: ArgsEnable;
   disable: ArgsDisable;
   create: ArgsCreate;
+  list: ArgsList;
 };
 
 export type ArgsByMethod<T extends keyof ArgsMapping> = ArgsMapping[T];
@@ -39,7 +45,7 @@ export const productCli = async <T extends keyof ProductServiceInterface>(
   productService: ProductServiceInterface,
   action: T,
   args: ArgsByMethod<T>
-): Promise<ProductInterface | void> => {
+): Promise<ProductInterface | ProductInterface[] | void> => {
   if (!productService[action]) {
     throw new Error(`Action ${action} not defined for product service`);
   }
@@ -66,5 +72,9 @@ export const productCli = async <T extends keyof ProductServiceInterface>(
     const { id } = args.params;
 
     return await productService.get(id);
+  }
+
+  if (action === "list" && args.action === "list") {
+    return await productService.list();
   }
 };

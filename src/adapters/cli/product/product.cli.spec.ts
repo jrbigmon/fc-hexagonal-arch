@@ -34,7 +34,7 @@ describe("Product cli", () => {
         status: ProductStatus.ENABLED,
       });
 
-      if (productCreated) {
+      if (!Array.isArray(productCreated) && productCreated) {
         const productDisabled = await productCli(productService, "disable", {
           action: "disable",
           params: { id: productCreated.getId() },
@@ -64,7 +64,7 @@ describe("Product cli", () => {
         status: ProductStatus.DISABLED,
       });
 
-      if (productCreated) {
+      if (!Array.isArray(productCreated) && productCreated) {
         const productEnabled = await productCli(productService, "enable", {
           action: "enable",
           params: { id: productCreated.getId(), price: 10.0 },
@@ -94,7 +94,7 @@ describe("Product cli", () => {
         status: ProductStatus.ENABLED,
       });
 
-      if (productCreated) {
+      if (!Array.isArray(productCreated) && productCreated) {
         const productSaved = await productCli(productService, "get", {
           action: "get",
           params: { id: productCreated.getId() },
@@ -103,6 +103,30 @@ describe("Product cli", () => {
         expect(productSaved).toBeDefined();
         expect(productSaved).toMatchObject(productCreated);
       }
+    });
+  });
+
+  describe("Create and List", () => {
+    it("Should be create a product enabled and get list with this product", async () => {
+      const productCreated = await productCli(productService, "create", {
+        action: "create",
+        params: { name: "product 3", price: 10.0 },
+      });
+
+      expect(productCreated).toBeDefined();
+      expect(productCreated).toMatchObject({
+        name: "product 3",
+        price: 10.0,
+        status: ProductStatus.ENABLED,
+      });
+
+      const productsSaved = await productCli(productService, "list", {
+        action: "list",
+        params: {},
+      });
+
+      expect(productsSaved).toHaveLength(1);
+      expect(productsSaved).toMatchObject([productCreated]);
     });
   });
 });
