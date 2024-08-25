@@ -4,11 +4,16 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node ./build/index.js",
+    "build": "npx tsc",
+    "start": "build && node ./build/index.js",
     "start:dev": "npx ts-node ./src/index.ts",
     "test:jest": "jest --passWithNoTests --updateSnapshot --coverage"
   },
+  "bin": {
+    "product-cli": "./build/adapters/cli/product/product.exec.cli.js"
+  },
   "devDependencies": {
+    "@types/inquirer": "^9.0.7",
     "@types/jest": "^29.5.12",
     "@types/sqlite3": "^3.1.11",
     "jest": "^29.7.0",
@@ -17,5 +22,9 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@inquirer/prompts": "^5.3.8",
+    "commander": "^12.1.0",
+    "inquirer": "^10.1.8"
+  }
 }
