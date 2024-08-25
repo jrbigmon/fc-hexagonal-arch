@@ -8,6 +8,18 @@ export class ProductService implements ProductServiceInterface {
     private readonly productPersistence: ProductPersistenceInterface
   ) {}
 
+  async list(): Promise<Array<ProductInterface>> {
+    try {
+      return await this.productPersistence.list();
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error("ProductService.list", error?.message);
+      }
+
+      throw error;
+    }
+  }
+
   async get(id: string): Promise<ProductInterface> {
     try {
       if (!id) throw new Error("Product id is required");

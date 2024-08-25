@@ -99,6 +99,30 @@ describe("Product service unit tests", () => {
     });
   });
 
+  describe("List", () => {
+    beforeEach(async () => {
+      productPersistence = new ProductPersistenceDatabase(database);
+      await productPersistence.save(
+        new Product("1", "Product 1", ProductStatus.ENABLED, 100)
+      );
+      productService = new ProductService(productPersistence);
+    });
+
+    it("should be return a list of products saved", async () => {
+      const products = await productPersistence.list();
+
+      expect(products).toHaveLength(1);
+      expect(products).toMatchObject([
+        {
+          id: "1",
+          name: "Product 1",
+          status: ProductStatus.ENABLED,
+          price: 100,
+        },
+      ]);
+    });
+  });
+
   describe("Enable", () => {
     beforeEach(async () => {
       productPersistence = new ProductPersistenceDatabase(database);

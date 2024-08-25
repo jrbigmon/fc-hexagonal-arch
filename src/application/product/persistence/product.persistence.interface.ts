@@ -2,6 +2,7 @@ import { ProductInterface } from "../entity/product.interface";
 
 export interface ProductReaderInterface {
   get(id: string): Promise<ProductInterface | null>;
+  list(): Promise<Array<ProductInterface>>;
 }
 
 export interface ProductWriterInterface {

@@ -31,6 +31,17 @@ describe("ProductPersistenceDatabase", () => {
     expect(productSaved).toMatchObject(product);
   });
 
+  it("should be save and get list of products in database", async () => {
+    const product = new Product("123", "Product 1", ProductStatus.ENABLED, 10);
+
+    await productPersistenceDatabase.save(product);
+
+    const productsSaved = await productPersistenceDatabase.list();
+
+    expect(productsSaved).toHaveLength(1);
+    expect(productsSaved).toMatchObject([product]);
+  });
+
   it("should be save and get a product when the product already exists in database", async () => {
     const product = new Product("123", "Product 1", ProductStatus.ENABLED, 10);
 

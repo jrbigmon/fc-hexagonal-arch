@@ -18,6 +18,25 @@ export class ProductPersistenceDatabase implements ProductPersistenceInterface {
     this.db = database;
   }
 
+  list(): Promise<Array<ProductInterface>> {
+    return new Promise((resolve, reject) => {
+      this.db.all(
+        "SELECT * FROM products",
+        (error, rows: ProductPersistedInterface[]) => {
+          if (error) {
+            return reject(error?.message);
+          }
+
+          return resolve(
+            rows?.map(
+              (row) => new Product(row.id, row.name, row.status, row.price)
+            )
+          );
+        }
+      );
+    });
+  }
+
   get(id: string): Promise<ProductInterface | null> {
     return new Promise((resolve, reject) => {
       this.db.get(
