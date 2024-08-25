@@ -76,7 +76,7 @@ export const ProductController = (productService: ProductServiceInterface) => ({
 
       const productCreated = await productService.create(name, price);
 
-      return res.json(productCreated).status(200);
+      return res.json(productCreated).status(201);
     } catch (error) {
       if (error instanceof ClientError) {
         return res.json({ error: error.message, statusCode: 401 }).status(401);
