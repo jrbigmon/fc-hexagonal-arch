@@ -7,7 +7,8 @@
     "build": "npx tsc",
     "start:web": "npx tsc && node ./build/adapters/web/http/server/server.js",
     "start:web:dev": "npx ts-node-dev ./src/adapters/web/http/server/server.ts --watch",
-    "test:jest": "jest --passWithNoTests --updateSnapshot --coverage"
+    "test:jest": "jest --passWithNoTests --updateSnapshot --coverage",
+    "start:cli": "npx tsc && node ./build/adapters/cli/product/product.exec.cli.js"
   },
   "bin": {
     "product-cli": "./build/adapters/cli/product/product.exec.cli.js"
