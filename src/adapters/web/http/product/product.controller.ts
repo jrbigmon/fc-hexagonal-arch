@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
 import { ProductServiceInterface } from "../../../../application/product/service/product.service.interface";
 import { ClientError } from "../../../../application/errors/client.error";
+import { ProductCreateDto } from "./dto/product.create.dto";
+import { Product } from "../../../../application/product/entity/product";
+import { ProductEnableDto } from "./dto/product.enable.dto";
+import { ProductDisableDto } from "./dto/product.disable.dto";
+import { ProductGetDto } from "./dto/product.get.dto";
 
 export const ProductController = (productService: ProductServiceInterface) => ({
   list: async (req: Request, res: Response) => {
@@ -21,7 +26,9 @@ export const ProductController = (productService: ProductServiceInterface) => ({
 
   get: async (req: Request, res: Response) => {
     try {
-      const product = await productService.get(req?.params?.id);
+      const productGetDto = new ProductGetDto(req?.params?.id);
+
+      const product = await productService.get(productGetDto.id);
 
       return res.json(product).status(200);
     } catch (error) {
@@ -37,9 +44,14 @@ export const ProductController = (productService: ProductServiceInterface) => ({
 
   enable: async (req: Request, res: Response) => {
     try {
+      const productEnableDto = new ProductEnableDto({
+        id: req?.params?.id,
+        price: req?.body?.price,
+      });
+
       const productEnabled = await productService.enable(
-        req?.params?.id,
-        req?.body?.price
+        productEnableDto.id,
+        productEnableDto.price
       );
 
       return res.json(productEnabled).status(200);
@@ -56,7 +68,11 @@ export const ProductController = (productService: ProductServiceInterface) => ({
 
   disable: async (req: Request, res: Response) => {
     try {
-      const productDisabled = await productService.disable(req?.params?.id);
+      const productDisableDto = new ProductDisableDto(req?.params?.id);
+
+      const productDisabled = await productService.disable(
+        productDisableDto.id
+      );
 
       return res.json(productDisabled).status(200);
     } catch (error) {
@@ -72,9 +88,12 @@ export const ProductController = (productService: ProductServiceInterface) => ({
 
   create: async (req: Request, res: Response) => {
     try {
-      const { name, price } = req?.body || {};
+      const productCreateDto = new ProductCreateDto(req.body || {});
 
-      const productCreated = await productService.create(name, price);
+      const productCreated = await productService.create(
+        productCreateDto.name,
+        productCreateDto.price
+      );
 
       return res.json(productCreated).status(201);
     } catch (error) {
