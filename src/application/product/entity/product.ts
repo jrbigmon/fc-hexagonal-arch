@@ -52,6 +52,12 @@ export class Product implements ProductInterface {
       throw new ClientError("Product price is required and must be a number");
     }
 
+    if (this.price < 0) {
+      throw new ClientError(
+        "Product price must be greater than or equal to zero"
+      );
+    }
+
     return true;
   }
 
