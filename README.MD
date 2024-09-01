@@ -1,5 +1,41 @@
 # Product CLI and Server Documentation
 
+## Architecture
+
+The Product CLI and Server use a Hexagonal Architecture, also known as Ports and Adapters Architecture.
+
+### What is Hexagonal Architecture?
+
+Hexagonal Architecture is a software architecture pattern that aims to separate the application's business logic from its infrastructure and presentation layers.
+
+### Why Use Hexagonal Architecture?
+
+There are several reasons why you might want to use Hexagonal Architecture:
+
+- **Separation of Concerns**: Hexagonal Architecture helps to separate the application's business logic from its infrastructure and presentation layers, making it easier to maintain and evolve the application.
+- **Testability**: By separating the business logic from the infrastructure and presentation layers, it becomes easier to write unit tests for the business logic.
+- **Flexibility**: Hexagonal Architecture makes it easier to switch out different infrastructure and presentation layers, allowing you to use different databases, web frameworks, or messaging systems.
+- **Reusability**: The business logic layer can be reused across different applications and infrastructure layers.
+
+### How Does Hexagonal Architecture Work?
+
+In a Hexagonal Architecture, the application is divided into several layers:
+
+- **Business Logic Layer**: This layer contains the application's business logic, which is responsible for processing data and making decisions.
+- **Infrastructure Layer**: This layer contains the infrastructure components, such as databases, file systems, and messaging systems.
+- **Presentation Layer**: This layer contains the presentation components, such as web frameworks, APIs, and user interfaces.
+- **Ports**: These are the interfaces between the business logic layer and the infrastructure and presentation layers.
+- **Adapters**: These are the implementations of the ports, which map the business logic layer to the infrastructure and presentation layers.
+
+**Final Considerations**
+
+When using Hexagonal Architecture, there are several things to keep in mind:
+
+- **Keep the business logic layer pure**: Avoid mixing infrastructure and presentation concerns into the business logic layer.
+- **Use ports and adapters**: Define clear interfaces between the business logic layer and the infrastructure and presentation layers, and use adapters to implement these interfaces.
+- **Test thoroughly**: Write unit tests for the business logic layer, and integration tests for the infrastructure and presentation layers.
+- **Be flexible**: Be prepared to switch out different infrastructure and presentation layers as needed.
+
 ## Table of Contents
 
 - [Getting Started](#getting-started)
