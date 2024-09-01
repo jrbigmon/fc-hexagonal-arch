@@ -85,7 +85,7 @@ The following endpoints are available:
 ]
 ```
 
-- `PUT /products/enable/:id`: Enable a product
+- `PUT /products/disable/:id`: Disable a product
 
 ```json
 // Response
@@ -97,7 +97,7 @@ The following endpoints are available:
 }
 ```
 
-- `PUT /products/disable/:id`: Disable a product
+- `PUT /products/enable/:id`: Enable a product
 
 ```json
 // Body
