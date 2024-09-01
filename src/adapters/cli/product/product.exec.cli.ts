@@ -24,7 +24,7 @@ program.action(async () => {
 
   const selectFn = () =>
     select({
-      message: "Esolha qual o comando que ira executar",
+      message: "Choose which command you will execute",
       choices: [
         { name: "get", value: "get" },
         { name: "list", value: "list" },
@@ -42,7 +42,7 @@ program.action(async () => {
 
       if (result === "create") {
         const productName = await input({
-          message: "Entre com o nome do produto",
+          message: "Enter the product name",
           validate(value) {
             if (!value) return false;
             return true;
@@ -50,7 +50,7 @@ program.action(async () => {
         });
 
         const productPrice = await input({
-          message: "Entre com o preco do produto",
+          message: "Enter the product price",
           validate(value) {
             if (!value) return false;
             if (isNaN(Number(value))) return false;
@@ -78,7 +78,7 @@ program.action(async () => {
 
       if (result === "get") {
         const productId = await input({
-          message: "Entre com o id do produto",
+          message: "Enter the product id",
           validate(value) {
             if (!value) return false;
             return true;
@@ -118,7 +118,7 @@ program.action(async () => {
 
       if (result === "disable") {
         const productId = await input({
-          message: "Entre com o id do produto",
+          message: "Enter the product id",
           validate(value) {
             if (!value) return false;
             return true;
@@ -139,7 +139,7 @@ program.action(async () => {
 
       if (result === "enable") {
         const productId = await input({
-          message: "Entre com o id do produto",
+          message: "Enter the product id",
           validate(value) {
             if (!value) return false;
             return true;
@@ -147,7 +147,7 @@ program.action(async () => {
         });
 
         const productPrice = await input({
-          message: "Entre com o preco do produto",
+          message: "Enter the product price",
           validate(value) {
             if (!value) return false;
             if (isNaN(Number(value))) return false;
